@@ -68,6 +68,7 @@ enforce_matching <- function(df, backbone, target_df = NULL, max_iter = 3){
   browser()
   new_matched_in_db <- new_matched %>% 
                               dplyr::left_join(get_db(), by = c(Matched.Genus = "Genus", Matched.Species = "Species")) %>%
+                              dplyr::rename(Genus = Matched.Genus, Species = Matched.Species) %>%
                               dplyr::select(Genus, Species, ID_merged)
   ## create undirected graph
   g <- create_undirected_synonym_graph()
