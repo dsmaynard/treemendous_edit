@@ -62,10 +62,12 @@ enforce_matching <- function(df, backbone, target_df = NULL, max_iter = 3){
   still_unmatched <- output_matching %>% dplyr::filter(matched == F) %>% dplyr::select(-'matched')
 
   ## matched analogues in database
-  new_matched_in_db <- get_db() %>%
-    dplyr::semi_join(new_matched, by = c('Genus' = 'Matched.Genus', 'Species' = 'Matched.Species')) %>%
-    dplyr::select(Genus, Species, ID_merged)
-
+  # new_matched_in_db <- get_db() %>%
+  #  dplyr::semi_join(new_matched, by = c('Genus' = 'Matched.Genus', 'Species' = 'Matched.Species')) %>%
+  #  dplyr::select(Genus, Species, ID_merged)
+  new_matched_in_db <- new_matched %>% 
+                              dplyr::left_join(get_db(), by = c(Matched.Genus = "Genus", Matched.Species = "Species")) %>%
+                              dplyr::select(Genus, Species, ID_merged)
   ## create undirected graph
   g <- create_undirected_synonym_graph()
 
@@ -75,7 +77,7 @@ enforce_matching <- function(df, backbone, target_df = NULL, max_iter = 3){
   diag(dist1) <- 0
 
   ids_matched <- as.character(new_matched_in_db$ID_merged)
-  browser()
+
   new_matched <- dplyr::bind_cols(new_matched, 'matched_id' = ids_matched)
   ids_matched_in_g <- ids_matched[ids_matched %in% rownames(dist1)]
   ids_matched_not_in_g <-ids_matched[!(ids_matched %in% rownames(dist1))]
