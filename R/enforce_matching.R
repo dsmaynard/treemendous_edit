@@ -189,7 +189,7 @@ enforce_matching <- function(df, backbone, target_df = NULL, max_iter = 3){
     enforce_matched <- dplyr::bind_rows(enforce_matched_right_target, enforce_matched_fuzzymatched_target_backtransformed)
   }
 
-  
+   
   successfull <- enforce_matched %>% dplyr::filter(matched == TRUE)
   non_successfull <- unmatched %>% dplyr::anti_join(dplyr::bind_rows(successfull, still_unmatched), by = c('Orig.Genus', 'Orig.Species'))
 
