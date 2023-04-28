@@ -61,7 +61,7 @@ enforce_matching <- function(df, backbone, target_df = NULL, max_iter = 3){
   new_matched <- output_matching %>% dplyr::filter(matched == T) %>% dplyr::select(-'matched')
   still_unmatched <- output_matching %>% dplyr::filter(matched == F) %>% dplyr::select(-'matched')
 
-  browser()
+
   ## matched analogues in database
   # new_matched_in_db <- get_db() %>%
   #  dplyr::semi_join(new_matched, by = c('Genus' = 'Matched.Genus', 'Species' = 'Matched.Species')) %>%
@@ -189,6 +189,7 @@ enforce_matching <- function(df, backbone, target_df = NULL, max_iter = 3){
     enforce_matched <- dplyr::bind_rows(enforce_matched_right_target, enforce_matched_fuzzymatched_target_backtransformed)
   }
 
+  browser()
   successfull <- enforce_matched %>% dplyr::filter(matched == TRUE)
   non_successfull <- unmatched %>% dplyr::anti_join(dplyr::bind_rows(successfull, still_unmatched), by = c('Orig.Genus', 'Orig.Species'))
 
