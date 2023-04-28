@@ -61,6 +61,7 @@ enforce_matching <- function(df, backbone, target_df = NULL, max_iter = 3){
   new_matched <- output_matching %>% dplyr::filter(matched == T) %>% dplyr::select(-'matched')
   still_unmatched <- output_matching %>% dplyr::filter(matched == F) %>% dplyr::select(-'matched')
 
+  browser()
   ## matched analogues in database
   # new_matched_in_db <- get_db() %>%
   #  dplyr::semi_join(new_matched, by = c('Genus' = 'Matched.Genus', 'Species' = 'Matched.Species')) %>%
