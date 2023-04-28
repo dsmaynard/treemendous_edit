@@ -189,7 +189,7 @@ enforce_matching <- function(df, backbone, target_df = NULL, max_iter = 3){
     enforce_matched <- dplyr::bind_rows(enforce_matched_right_target, enforce_matched_fuzzymatched_target_backtransformed)
   }
 
-  browser()
+  
   successfull <- enforce_matched %>% dplyr::filter(matched == TRUE)
   non_successfull <- unmatched %>% dplyr::anti_join(dplyr::bind_rows(successfull, still_unmatched), by = c('Orig.Genus', 'Orig.Species'))
 
@@ -197,7 +197,7 @@ enforce_matching <- function(df, backbone, target_df = NULL, max_iter = 3){
   all_unmatched <- dplyr::bind_rows(still_unmatched, non_successfull) %>% dplyr::mutate('enforced_matched' = FALSE) %>% matching(backbone, target_df)
   all_matched <- dplyr::bind_rows(matched, successfull)
 
-  res <- dplyr::bind_rows(all_unmatched, all_matched)
+  res <- dplyr::bind_rows(all_unmatched, all_matched) %>% distinct()
   assertthat::assert_that(nrow(res) == nrow(df), msg = "Number of input species must agree with number of output species.")
 
   res
